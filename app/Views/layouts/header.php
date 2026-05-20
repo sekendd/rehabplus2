@@ -7,7 +7,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title><?= $pageTitle ?? 'RehabPlus' ?></title>
+    <title><?= $pageTitle ?? 'RehabPlus Dashboard' ?></title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -18,31 +18,30 @@
           rel="stylesheet">
 
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet">
 
     <style>
 
         :root{
 
-            --bg-dark:#020617;
+            --primary:#14b8a6;
+            --primary-dark:#0f766e;
+            --primary-light:#ccfbf1;
 
-            --sidebar-dark:#0f172a;
+            --bg:#f4f7fb;
+            --sidebar:#ffffff;
+            --card:#ffffff;
 
-            --card-dark:rgba(15,23,42,.75);
+            --text:#0f172a;
+            --muted:#64748b;
 
-            --teal:#14b8a6;
+            --border:#e2e8f0;
 
-            --teal-light:#2dd4bf;
+            --shadow:
+                0 12px 35px rgba(15,23,42,.06);
 
-            --text-light:#f1f5f9;
-
-            --text-muted:#94a3b8;
-
-            --border-dark:rgba(255,255,255,.06);
-
-            --sidebar-w:250px;
-
+            --sidebar-w:260px;
         }
 
         *{
@@ -53,12 +52,9 @@
 
             margin:0;
 
-            background:
-                radial-gradient(circle at top left,#0f766e22,transparent 25%),
-                radial-gradient(circle at bottom right,#0891b222,transparent 25%),
-                linear-gradient(135deg,#020617 0%,#0f172a 100%);
+            background:var(--bg);
 
-            color:var(--text-light);
+            color:var(--text);
 
             min-height:100vh;
         }
@@ -67,67 +63,64 @@
 
         .navbar{
 
-            height:70px;
+            height:74px;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(15,23,42,.95),
-                    rgba(20,184,166,.15)
-                );
+            background:white;
 
-            backdrop-filter:blur(18px);
+            border-bottom:1px solid var(--border);
 
-            border-bottom:1px solid rgba(255,255,255,.05);
-
-            box-shadow:0 10px 30px rgba(0,0,0,.25);
+            padding:0 28px;
 
             position:sticky;
-
             top:0;
-
             z-index:999;
+
+            box-shadow:
+                0 4px 18px rgba(15,23,42,.04);
         }
 
         .navbar-brand{
 
-            font-size:1.35rem;
+            font-size:1.8rem;
 
-            font-weight:700;
+            font-weight:800;
 
-            color:white !important;
+            color:var(--text) !important;
         }
 
         .navbar-brand i{
-            color:var(--teal-light);
+
+            color:var(--primary);
+        }
+
+        .top-date{
+
+            color:var(--muted);
+
+            font-weight:600;
         }
 
         /* USER CHIP */
 
         .user-chip{
 
-            background:rgba(255,255,255,.06);
+            background:#f8fafc;
 
-            border:1px solid rgba(255,255,255,.08);
+            border:1px solid var(--border);
 
             border-radius:50px;
 
-            padding:.35rem .85rem .35rem .4rem;
+            padding:.45rem .9rem .45rem .45rem;
 
             display:flex;
-
             align-items:center;
-
-            gap:.6rem;
-
-            backdrop-filter:blur(10px);
+            gap:.7rem;
         }
 
         .user-avatar{
 
-            width:34px;
-
-            height:34px;
+            width:40px;
+            height:40px;
 
             border-radius:50%;
 
@@ -135,18 +128,16 @@
                 linear-gradient(
                     135deg,
                     #14b8a6,
-                    #0ea5e9
+                    #2dd4bf
                 );
 
             display:flex;
-
             align-items:center;
-
             justify-content:center;
 
-            font-weight:700;
-
             color:white;
+
+            font-weight:700;
         }
 
         /* SIDEBAR */
@@ -155,31 +146,23 @@
 
             width:var(--sidebar-w);
 
-            min-height:calc(100vh - 70px);
+            min-height:calc(100vh - 74px);
 
-            background:
-                linear-gradient(
-                    180deg,
-                    rgba(15,23,42,.97),
-                    rgba(2,6,23,.98)
-                );
+            background:white;
 
-            border-right:1px solid rgba(255,255,255,.05);
+            border-right:1px solid var(--border);
 
-            padding:1.4rem .9rem;
+            padding:1.5rem 1rem;
 
             position:sticky;
-
-            top:70px;
-
-            backdrop-filter:blur(18px);
+            top:74px;
         }
 
         .nav-section{
 
-            color:#64748b;
+            color:#94a3b8;
 
-            font-size:.72rem;
+            font-size:.78rem;
 
             font-weight:700;
 
@@ -187,33 +170,38 @@
 
             text-transform:uppercase;
 
-            padding:.5rem .85rem;
+            padding:.6rem .9rem;
         }
 
         .sidebar .nav-link{
 
-            color:#cbd5e1;
+            color:#334155;
 
-            border-radius:16px;
+            border-radius:18px;
 
-            padding:.85rem 1rem;
+            padding:.95rem 1rem;
 
             display:flex;
-
             align-items:center;
+            gap:.9rem;
 
-            gap:.8rem;
+            margin-bottom:.35rem;
 
             transition:.2s ease;
 
-            margin-bottom:.25rem;
+            font-weight:600;
+        }
+
+        .sidebar .nav-link i{
+
+            font-size:1.05rem;
         }
 
         .sidebar .nav-link:hover{
 
-            background:rgba(20,184,166,.12);
+            background:#f0fdfa;
 
-            color:var(--teal-light);
+            color:var(--primary-dark);
 
             transform:translateX(2px);
         }
@@ -223,16 +211,14 @@
             background:
                 linear-gradient(
                     135deg,
-                    rgba(20,184,166,.18),
-                    rgba(14,165,233,.12)
+                    #14b8a6,
+                    #2dd4bf
                 );
 
             color:white;
 
-            border:1px solid rgba(45,212,191,.12);
-
             box-shadow:
-                0 10px 25px rgba(20,184,166,.08);
+                0 10px 24px rgba(20,184,166,.20);
         }
 
         /* MAIN */
@@ -244,172 +230,184 @@
             padding:2rem;
         }
 
-        /* CARDS */
+        /* PAGE TITLE */
 
-        .card{
+        .page-title{
 
-            background:var(--card-dark) !important;
+            font-size:2rem;
 
-            border:1px solid rgba(255,255,255,.05);
+            font-weight:800;
 
-            border-radius:24px;
-
-            backdrop-filter:blur(18px);
-
-            box-shadow:
-                0 20px 50px rgba(0,0,0,.25);
-
-            overflow:hidden;
+            margin-bottom:.25rem;
         }
 
-        .card-header{
+        .page-subtitle{
 
-            background:transparent !important;
+            color:var(--muted);
 
-            border-bottom:1px solid rgba(255,255,255,.05);
-
-            padding:1rem 1.4rem;
-
-            color:white;
-
-            font-weight:600;
+            font-size:1rem;
         }
 
-        /* TABLES */
-
-        .table{
-
-            margin-bottom:0 !important;
-
-            color:#e2e8f0 !important;
-
-            --bs-table-bg: transparent !important;
-
-            --bs-table-hover-bg: rgba(255,255,255,.03) !important;
-        }
-
-        .table tbody,
-        .table tbody tr,
-        .table tbody td{
-
-            background:transparent !important;
-
-            color:#e2e8f0 !important;
-        }
-
-        .table thead th{
-
-            background:rgba(255,255,255,.03) !important;
-
-            color:#94a3b8 !important;
-
-            border-color:rgba(255,255,255,.05) !important;
-
-            text-transform:uppercase;
-
-            font-size:.75rem;
-
-            letter-spacing:.08em;
-        }
-
-        .table td{
-
-            border-color:rgba(255,255,255,.04) !important;
-
-            vertical-align:middle;
-        }
-
-        .table-hover tbody tr:hover{
-            background:rgba(255,255,255,.03) !important;
-        }
-
-        /* INPUTS */
-
-        .form-control,
-        .form-select,
-        .input-group-text{
-
-            background:rgba(255,255,255,.04) !important;
-
-            border:1px solid rgba(255,255,255,.08) !important;
-
-            color:white !important;
-        }
-
-        .form-control::placeholder{
-            color:#94a3b8 !important;
-        }
-
-        .form-control:focus{
-
-            background:rgba(255,255,255,.06) !important;
-
-            border-color:var(--teal) !important;
-
-            color:white !important;
-
-            box-shadow:
-                0 0 0 .2rem rgba(20,184,166,.12) !important;
-        }
-
-        /* BUTTONS */
+        /* BUTTON */
 
         .btn-primary{
 
             background:
                 linear-gradient(
                     135deg,
-                    #0f766e,
-                    #14b8a6
+                    #14b8a6,
+                    #2dd4bf
                 );
 
             border:none;
 
-            border-radius:14px;
+            border-radius:16px;
 
-            font-weight:600;
+            padding:.9rem 1.3rem;
+
+            font-weight:700;
+
+            box-shadow:
+                0 12px 24px rgba(20,184,166,.18);
         }
 
         .btn-primary:hover{
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #115e59,
-                    #0d9488
-                );
+            opacity:.92;
         }
 
-        .btn-outline-secondary{
+        /* CARDS */
 
-            border-color:rgba(255,255,255,.08);
+        .card{
 
-            color:#cbd5e1;
+            background:var(--card);
+
+            border:1px solid var(--border);
+
+            border-radius:28px;
+
+            box-shadow:var(--shadow);
+
+            overflow:hidden;
         }
 
-        .btn-outline-secondary:hover{
+        .card-header{
 
-            background:rgba(255,255,255,.08);
+            background:white !important;
 
-            color:white;
-        }
+            border-bottom:1px solid var(--border);
 
-        /* TEXT */
+            padding:1.2rem 1.5rem;
 
-        .page-title{
-
-            font-size:1.4rem;
+            font-size:1.1rem;
 
             font-weight:700;
 
-            color:white;
+            color:var(--text);
         }
 
-        .page-subtitle{
+        /* STATS */
 
-            color:#94a3b8;
+        .stat-card{
 
-            font-size:.9rem;
+            padding:1.8rem;
+
+            position:relative;
+
+            min-height:160px;
+        }
+
+        .stat-label{
+
+            color:var(--muted);
+
+            font-size:1rem;
+
+            font-weight:600;
+        }
+
+        .stat-value{
+
+            font-size:3.2rem;
+
+            font-weight:800;
+
+            margin-top:.5rem;
+        }
+
+        .stat-icon{
+
+            position:absolute;
+
+            right:24px;
+            top:50%;
+
+            transform:translateY(-50%);
+
+            font-size:3rem;
+
+            opacity:.9;
+        }
+
+        /* TABLE */
+
+        .table{
+
+            color:#334155;
+
+            margin-bottom:0;
+        }
+
+        .table thead th{
+
+            color:#64748b;
+
+            font-size:.82rem;
+
+            text-transform:uppercase;
+
+            border-color:var(--border);
+
+            letter-spacing:.06em;
+        }
+
+        .table td{
+
+            border-color:var(--border);
+
+            vertical-align:middle;
+        }
+
+        .table tbody tr:hover{
+
+            background:#f8fafc;
+        }
+
+        /* SEARCH */
+
+        .search-box{
+
+            background:white;
+
+            border:1px solid var(--border);
+
+            border-radius:16px;
+
+            overflow:hidden;
+        }
+
+        .search-box .form-control{
+
+            border:none;
+
+            box-shadow:none;
+        }
+
+        /* CHART CANVAS */
+
+        canvas{
+
+            max-height:360px !important;
         }
 
         /* MOBILE */
@@ -424,6 +422,14 @@
                 padding:1rem;
             }
 
+            .navbar{
+                padding:0 14px;
+            }
+
+            .page-title{
+                font-size:1.5rem;
+            }
+
         }
 
     </style>
@@ -432,12 +438,14 @@
 
 <body>
 
-<nav class="navbar navbar-dark px-4">
+<!-- NAVBAR -->
+
+<nav class="navbar d-flex justify-content-between align-items-center">
 
     <a class="navbar-brand d-flex align-items-center gap-2"
        href="<?= site_url('dashboard') ?>">
 
-        <i class="bi bi-heart-pulse-fill fs-4"></i>
+        <i class="bi bi-heart-pulse-fill"></i>
 
         RehabPlus
 
@@ -445,34 +453,44 @@
 
     <div class="d-flex align-items-center gap-3">
 
-        <span class="text-white-50 small d-none d-md-inline">
+        <span class="top-date d-none d-md-inline">
+
             <?= date('F j, Y') ?>
+
         </span>
 
-        <div class="user-chip text-white small">
+        <div class="user-chip">
 
             <div class="user-avatar">
-                <?= strtoupper(substr(session()->get('user_name') ?? 'U', 0, 1)) ?>
+
+                <?= strtoupper(substr(session()->get('user_name') ?? 'U',0,1)) ?>
+
             </div>
 
-            <span>
-                <?= esc(session()->get('user_name') ?? '') ?>
-            </span>
+            <div>
 
-            <span class="badge bg-info text-dark">
-                <?= ucfirst(session()->get('user_role') ?? '') ?>
-            </span>
+                <div class="fw-bold">
+
+                    <?= esc(session()->get('user_name') ?? '') ?>
+
+                </div>
+
+                <small class="text-muted">
+
+                    <?= ucfirst(session()->get('user_role') ?? '') ?>
+
+                </small>
+
+            </div>
 
         </div>
 
         <a href="<?= site_url('logout') ?>"
-           class="btn btn-sm btn-outline-light d-flex align-items-center gap-1">
+           class="btn btn-outline-secondary rounded-pill px-3">
 
-            <i class="bi bi-box-arrow-right"></i>
+            <i class="bi bi-box-arrow-right me-1"></i>
 
-            <span class="d-none d-md-inline">
-                Logout
-            </span>
+            Logout
 
         </a>
 
@@ -482,101 +500,101 @@
 
 <div class="d-flex">
 
-<nav class="sidebar d-none d-md-flex flex-column">
+    <!-- SIDEBAR -->
 
-    <div class="nav-section">
-        Main
-    </div>
+    <nav class="sidebar d-none d-md-flex flex-column">
 
-    <ul class="nav flex-column gap-1 mb-3">
+        <div class="nav-section">
 
-        <!-- DASHBOARD -->
+            Main
 
-        <li class="nav-item">
+        </div>
 
-            <a class="nav-link <?= uri_string() === '' || uri_string() === 'dashboard' ? 'active' : '' ?>"
-               href="<?= site_url('dashboard') ?>">
+        <ul class="nav flex-column">
 
-                <i class="bi bi-speedometer2"></i>
+            <li class="nav-item">
 
-                Dashboard
+                <a class="nav-link <?= uri_string() === '' || uri_string() === 'dashboard' ? 'active' : '' ?>"
+                   href="<?= site_url('dashboard') ?>">
 
-            </a>
+                    <i class="bi bi-speedometer2"></i>
 
-        </li>
+                    Dashboard
 
-        <!-- PATIENTS -->
+                </a>
 
-        <li class="nav-item">
+            </li>
 
-            <a class="nav-link <?= str_starts_with(uri_string(), 'patients') ? 'active' : '' ?>"
-               href="<?= site_url('patients') ?>">
+            <li class="nav-item">
 
-                <i class="bi bi-people-fill"></i>
+                <a class="nav-link <?= str_starts_with(uri_string(),'patients') ? 'active' : '' ?>"
+                   href="<?= site_url('patients') ?>">
 
-                Patients
+                    <i class="bi bi-people-fill"></i>
 
-            </a>
+                    Patients
 
-        </li>
+                </a>
 
-        <!-- APPOINTMENTS -->
+            </li>
 
-        <li class="nav-item">
+            <li class="nav-item">
 
-            <a class="nav-link <?= str_starts_with(uri_string(), 'appointments') ? 'active' : '' ?>"
-               href="<?= site_url('appointments') ?>">
+                <a class="nav-link"
+                   href="<?= site_url('appointments') ?>">
 
-                <i class="bi bi-calendar-check"></i>
+                    <i class="bi bi-calendar-check"></i>
 
-                Appointments
+                    Appointments
 
-            </a>
+                </a>
 
-        </li>
+            </li>
 
-        <!-- ANALYTICS -->
+            <li class="nav-item">
 
-        <li class="nav-item">
+                <a class="nav-link"
+                   href="<?= site_url('analytics') ?>">
 
-            <a class="nav-link <?= str_starts_with(uri_string(), 'analytics') ? 'active' : '' ?>"
-               href="<?= site_url('analytics') ?>">
+                    <i class="bi bi-graph-up-arrow"></i>
 
-                <i class="bi bi-activity"></i>
+                    Recovery Analytics
 
-                Recovery Analytics
+                </a>
 
-            </a>
+            </li>
 
-        </li>
+        </ul>
 
-    </ul>
+        <?php if(session()->get('user_role') === 'superadmin'): ?>
 
-    <?php if (session()->get('user_role') === 'superadmin'): ?>
+        <div class="nav-section mt-4">
 
-    <div class="nav-section">
-        Admin
-    </div>
+            Admin
 
-    <ul class="nav flex-column gap-1">
+        </div>
 
-        <li class="nav-item">
+        <ul class="nav flex-column">
 
-            <a class="nav-link <?= str_starts_with(uri_string(), 'users') ? 'active' : '' ?>"
-               href="<?= site_url('users') ?>">
+            <li class="nav-item">
 
-                <i class="bi bi-person-gear"></i>
+                <a class="nav-link <?= str_starts_with(uri_string(),'users') ? 'active' : '' ?>"
+                   href="<?= site_url('users') ?>">
 
-                Users
+                    <i class="bi bi-person-gear"></i>
 
-            </a>
+                    Users
 
-        </li>
+                </a>
 
-    </ul>
+            </li>
 
-    <?php endif ?>
+        </ul>
 
-</nav>
+        <?php endif ?>
 
-<main class="main-content">
+    </nav>
+
+    <!-- MAIN -->
+
+    <main class="main-content">

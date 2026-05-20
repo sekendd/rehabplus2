@@ -12,11 +12,11 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->get('/', 'AuthController::login');
 
-$routes->get('/login', 'AuthController::login');
-$routes->post('/login', 'AuthController::attempt');
+$routes->get('login', 'AuthController::login');
+$routes->post('login', 'AuthController::attempt');
 
-$routes->get('/logout', 'AuthController::logout');
-$routes->post('/logout', 'AuthController::doLogout');
+$routes->get('logout', 'AuthController::logout');
+$routes->post('logout', 'AuthController::doLogout');
 
 
 // ======================================================
@@ -72,7 +72,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
 
     // ==================================================
-    // APPOINTMENTS MODULE
+    // APPOINTMENTS
     // ==================================================
 
     $routes->get(
@@ -92,7 +92,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
 
     // ==================================================
-    // RECOVERY ANALYTICS
+    // ANALYTICS
     // ==================================================
 
     $routes->get(
@@ -143,7 +143,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
 
 // ======================================================
-// REST API
+// API ROUTES
 // ======================================================
 
 $routes->group('api/v1', ['filter' => 'apiauth'], function ($routes) {

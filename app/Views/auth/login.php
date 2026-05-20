@@ -1,164 +1,876 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In – RehabPlus</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RehabPlus Login</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
     <style>
-        body { margin:0; min-height:100vh; display:flex; background:#f4f6f9; font-family:'Segoe UI',sans-serif; }
 
-        .left-panel {
-            width: 42%;
-            background: linear-gradient(150deg, #0b7a88 0%, #0e9aaa 50%, #17c3b2 100%);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            padding: 3rem; color: #fff; position: relative; overflow: hidden;
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Inter',sans-serif;
         }
-        .left-panel::before {
-            content: ''; position: absolute;
-            width: 350px; height: 350px; border-radius: 50%;
-            background: rgba(255,255,255,.06);
-            top: -80px; right: -80px;
-        }
-        .left-panel::after {
-            content: ''; position: absolute;
-            width: 250px; height: 250px; border-radius: 50%;
-            background: rgba(255,255,255,.06);
-            bottom: -60px; left: -60px;
-        }
-        .left-panel .brand-icon { font-size: 3.5rem; margin-bottom: 1rem; }
-        .left-panel h1 { font-size: 2rem; font-weight: 700; margin-bottom: .5rem; }
-        .left-panel p { font-size: .9rem; opacity: .8; text-align: center; max-width: 260px; line-height: 1.6; }
-        .left-panel .badge-role {
-            margin-top: 2rem;
-            background: rgba(255,255,255,.18);
-            border: 1px solid rgba(255,255,255,.3);
-            border-radius: 50px; padding: .4rem 1.2rem;
-            font-size: .78rem; letter-spacing: .06em; text-transform: uppercase;
-        }
-        .feature-list { list-style: none; padding: 0; margin-top: 2rem; text-align: left; }
-        .feature-list li { font-size: .82rem; opacity: .85; margin-bottom: .5rem; display: flex; align-items: center; gap: .5rem; }
 
-        .right-panel { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-        .login-box { width: 100%; max-width: 420px; }
-        .login-box h4 { font-weight: 700; color: #1a2b3c; margin-bottom: .25rem; font-size: 1.4rem; }
-        .login-box .subtitle { color: #6c757d; font-size: .875rem; margin-bottom: 2rem; }
+        body{
 
-        .form-label { font-weight: 600; font-size: .82rem; color: #344054; }
-        .form-control, .input-group-text {
-            border-radius: 8px; font-size: .9rem;
-            border: 1.5px solid #d0d5dd;
+            height:100vh;
+
+            overflow:hidden;
+
+            background:
+                radial-gradient(circle at top left,#164e6322,transparent 30%),
+                radial-gradient(circle at bottom right,#0f766e22,transparent 30%),
+                linear-gradient(135deg,#020617 0%,#071326 100%);
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            padding:18px;
         }
-        .input-group .form-control { border-radius: 0 8px 8px 0; border-left: none; }
-        .input-group .input-group-text:first-child { border-radius: 8px 0 0 8px; border-right: none; }
-        .input-group .input-group-text:last-child { border-radius: 0 8px 8px 0; border-left: none; }
-        .form-control { padding: .65rem 1rem; }
-        .form-control:focus { border-color: #0e9aaa; box-shadow: 0 0 0 3px rgba(14,154,170,.15); }
 
-        .btn-signin {
-            background: linear-gradient(135deg, #0b7a88, #0e9aaa);
-            border: none; border-radius: 8px;
-            padding: .75rem; font-size: .95rem; font-weight: 600;
-            letter-spacing: .02em; transition: opacity .2s;
+        /* MAIN WRAPPER */
+
+        .login-wrapper{
+
+            width:100%;
+
+            max-width:1650px;
+
+            height:calc(100vh - 36px);
+
+            background:#ffffff;
+
+            border-radius:32px;
+
+            overflow:hidden;
+
+            display:flex;
+
+            box-shadow:
+                0 35px 100px rgba(0,0,0,.35);
         }
-        .btn-signin:hover { opacity: .88; }
 
-        .divider { border-top: 1px solid #e4e7ec; margin: 1.5rem 0; }
-        .footer-note { text-align: center; font-size: .78rem; color: #98a2b3; }
+        /* LEFT PANEL */
 
-        @media (max-width: 768px) { .left-panel { display: none; } }
+        .left-panel{
+
+            width:52%;
+
+            position:relative;
+
+            overflow:hidden;
+
+            display:flex;
+            align-items:flex-end;
+
+            background:
+                linear-gradient(
+                    rgba(2,6,23,.45),
+                    rgba(2,6,23,.78)
+                ),
+                url('<?= base_url('assets/images/pt.jpg') ?>');
+
+            background-size:cover;
+
+            background-position:center center;
+
+            background-repeat:no-repeat;
+        }
+
+        /* GLOW */
+
+        .left-panel::before{
+
+            content:'';
+
+            position:absolute;
+
+            width:700px;
+            height:700px;
+
+            border-radius:50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(34,211,238,.22),
+                    transparent 70%
+                );
+
+            top:-220px;
+            right:-120px;
+        }
+
+        .left-panel::after{
+
+            content:'';
+
+            position:absolute;
+
+            inset:0;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(0,0,0,.08),
+                    rgba(0,0,0,.52)
+                );
+        }
+
+        /* LEFT CONTENT */
+
+        .left-content{
+
+            position:relative;
+
+            z-index:2;
+
+            padding:48px 52px;
+
+            width:100%;
+
+            color:white;
+        }
+
+        /* ICON */
+
+        .brand-icon{
+
+            width:82px;
+            height:82px;
+
+            border-radius:22px;
+
+            background:rgba(255,255,255,.10);
+
+            border:1px solid rgba(255,255,255,.15);
+
+            backdrop-filter:blur(10px);
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            margin-bottom:28px;
+        }
+
+        .brand-icon i{
+
+            font-size:2.8rem;
+
+            color:#22d3ee;
+        }
+
+        /* TITLE */
+
+        .brand-title{
+
+            font-size:5rem;
+
+            font-weight:900;
+
+            line-height:.95;
+
+            margin-bottom:20px;
+
+            letter-spacing:-3px;
+        }
+
+        .brand-title span{
+
+            color:#22d3ee;
+        }
+
+        /* DESCRIPTION */
+
+        .brand-desc{
+
+            max-width:580px;
+
+            font-size:1.08rem;
+
+            line-height:1.7;
+
+            color:rgba(255,255,255,.92);
+
+            margin-bottom:34px;
+        }
+
+        /* FEATURES */
+
+        .feature-list{
+
+            list-style:none;
+
+            padding:0;
+
+            margin:0 0 40px 0;
+        }
+
+        .feature-list li{
+
+            display:flex;
+            align-items:center;
+
+            gap:16px;
+
+            margin-bottom:16px;
+
+            font-size:1rem;
+
+            font-weight:600;
+        }
+
+        .feature-icon{
+
+            width:48px;
+            height:48px;
+
+            border-radius:50%;
+
+            background:#22d3ee;
+
+            color:#001018;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            font-size:1.05rem;
+
+            flex-shrink:0;
+
+            box-shadow:
+                0 10px 30px rgba(34,211,238,.25);
+        }
+
+        /* BADGE */
+
+        .secure-badge{
+
+            display:inline-flex;
+            align-items:center;
+
+            gap:12px;
+
+            padding:14px 24px;
+
+            border-radius:50px;
+
+            background:rgba(255,255,255,.08);
+
+            border:1px solid rgba(255,255,255,.18);
+
+            backdrop-filter:blur(14px);
+
+            font-weight:700;
+
+            font-size:.90rem;
+
+            letter-spacing:.03em;
+        }
+
+        /* RIGHT PANEL */
+
+        .right-panel{
+
+            flex:1;
+
+            background:#f8fafc;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            padding:40px 60px;
+
+            overflow:hidden;
+        }
+
+        /* LOGIN BOX */
+
+        .login-box{
+
+            width:100%;
+
+            max-width:560px;
+        }
+
+        /* LOGO */
+
+        .top-logo{
+
+            width:110px;
+            height:110px;
+
+            border-radius:50%;
+
+            background:#ecfeff;
+
+            margin:0 auto 30px;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .top-logo i{
+
+            font-size:3.4rem;
+
+            color:#06b6d4;
+        }
+
+        /* LOGIN TITLE */
+
+        .login-title{
+
+            font-size:4.3rem;
+
+            line-height:.95;
+
+            font-weight:900;
+
+            text-align:center;
+
+            color:#0f172a;
+
+            margin-bottom:14px;
+
+            letter-spacing:-3px;
+        }
+
+        .login-subtitle{
+
+            text-align:center;
+
+            font-size:1.08rem;
+
+            color:#64748b;
+
+            margin-bottom:38px;
+        }
+
+        /* LABEL */
+
+        .form-label{
+
+            font-size:1rem;
+
+            font-weight:700;
+
+            color:#0f172a;
+
+            margin-bottom:12px;
+        }
+
+        /* INPUT GROUP */
+
+        .input-group{
+
+            height:72px;
+
+            border-radius:22px;
+
+            overflow:hidden;
+
+            border:2px solid #67e8f9;
+
+            background:white;
+
+            margin-bottom:26px;
+
+            transition:.25s;
+        }
+
+        .input-group:focus-within{
+
+            transform:translateY(-2px);
+
+            box-shadow:
+                0 14px 34px rgba(34,211,238,.18);
+        }
+
+        .input-group-text{
+
+            border:none !important;
+
+            background:white !important;
+
+            padding:0 24px;
+
+            color:#94a3b8;
+
+            font-size:1.1rem;
+        }
+
+        .form-control{
+
+            border:none !important;
+
+            box-shadow:none !important;
+
+            font-size:1rem;
+
+            font-weight:500;
+
+            color:#0f172a;
+        }
+
+        .form-control::placeholder{
+
+            color:#94a3b8;
+        }
+
+        /* REMEMBER */
+
+        .remember-row{
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+
+            margin-top:-4px;
+            margin-bottom:28px;
+        }
+
+        .remember-row label{
+
+            color:#64748b;
+
+            font-size:.96rem;
+        }
+
+        .remember-row a{
+
+            color:#14b8a6;
+
+            text-decoration:none;
+
+            font-weight:700;
+        }
+
+        /* BUTTON */
+
+        .btn-login{
+
+            width:100%;
+
+            height:72px;
+
+            border:none;
+
+            border-radius:22px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #0f766e,
+                    #14b8a6,
+                    #2dd4bf
+                );
+
+            color:white;
+
+            font-size:1.18rem;
+
+            font-weight:800;
+
+            transition:.25s;
+
+            box-shadow:
+                0 16px 38px rgba(20,184,166,.22);
+        }
+
+        .btn-login:hover{
+
+            transform:translateY(-3px);
+
+            box-shadow:
+                0 22px 48px rgba(20,184,166,.32);
+        }
+
+        /* FOOTER */
+
+        .footer-line{
+
+            border-top:1px solid #e2e8f0;
+
+            margin:28px 0 18px;
+        }
+
+        .footer-note{
+
+            text-align:center;
+
+            color:#94a3b8;
+
+            font-size:.95rem;
+        }
+
+        /* ALERT */
+
+        .alert{
+
+            border:none;
+
+            border-radius:18px;
+
+            padding:14px 18px;
+
+            margin-bottom:20px;
+        }
+
+        /* MOBILE */
+
+        @media(max-width:992px){
+
+            body{
+
+                overflow:auto;
+
+                padding:0;
+            }
+
+            .login-wrapper{
+
+                flex-direction:column;
+
+                height:auto;
+
+                border-radius:0;
+            }
+
+            .left-panel{
+
+                width:100%;
+
+                min-height:420px;
+            }
+
+            .right-panel{
+
+                width:100%;
+
+                padding:40px 24px;
+            }
+
+            .brand-title{
+                font-size:3.6rem;
+            }
+
+            .login-title{
+                font-size:3rem;
+            }
+
+            .left-content{
+                padding:38px;
+            }
+
+        }
+
     </style>
+
 </head>
+
 <body>
 
-<div class="left-panel d-none d-md-flex">
-    <i class="bi bi-activity brand-icon"></i>
-    <h1>RehabPlus</h1>
-    <p>Rehabilitation management system for clinical professionals.</p>
-    <ul class="feature-list">
-        <li><i class="bi bi-check-circle-fill"></i> Patient progress tracking</li>
-        <li><i class="bi bi-check-circle-fill"></i> Exercise compliance monitoring</li>
-        <li><i class="bi bi-check-circle-fill"></i> Pain level analytics</li>
-    </ul>
-    <span class="badge-role"><i class="bi bi-shield-lock me-1"></i>Secure Portal</span>
-</div>
+<div class="login-wrapper">
 
-<div class="right-panel">
-    <div class="login-box">
+    <!-- LEFT -->
 
-        <div class="text-center mb-4 d-md-none">
-            <i class="bi bi-activity" style="font-size:2.5rem;color:#0e9aaa;"></i>
-            <div class="fw-bold fs-4" style="color:#0e9aaa;">RehabPlus</div>
+    <div class="left-panel">
+
+        <div class="left-content">
+
+            <div class="brand-icon">
+
+                <i class="bi bi-heart-pulse-fill"></i>
+
+            </div>
+
+            <h1 class="brand-title">
+
+                Rehab<span>Plus</span>
+
+            </h1>
+
+            <p class="brand-desc">
+
+                Smart rehabilitation management system for physical
+                therapists and healthcare professionals.
+
+            </p>
+
+            <ul class="feature-list">
+
+                <li>
+
+                    <div class="feature-icon">
+
+                        <i class="bi bi-graph-up-arrow"></i>
+
+                    </div>
+
+                    Patient recovery analytics
+
+                </li>
+
+                <li>
+
+                    <div class="feature-icon">
+
+                        <i class="bi bi-clipboard2-pulse"></i>
+
+                    </div>
+
+                    Exercise compliance monitoring
+
+                </li>
+
+                <li>
+
+                    <div class="feature-icon">
+
+                        <i class="bi bi-heart-pulse"></i>
+
+                    </div>
+
+                    Pain level & recovery tracking
+
+                </li>
+
+            </ul>
+
+            <div class="secure-badge">
+
+                <i class="bi bi-shield-lock-fill"></i>
+
+                SECURE PHYSICAL THERAPY PORTAL
+
+            </div>
+
         </div>
 
-        <h4>Welcome back</h4>
-        <p class="subtitle">Sign in to your account to continue</p>
-
-        <?php if (session()->getFlashdata('success')): ?>
-            <div class="alert alert-success py-2 small d-flex align-items-center gap-2">
-                <i class="bi bi-check-circle-fill"></i>
-                <?= esc(session()->getFlashdata('success')) ?>
-            </div>
-        <?php endif ?>
-
-        <?php if (session()->getFlashdata('error')): ?>
-            <div class="alert alert-danger py-2 small d-flex align-items-center gap-2">
-                <i class="bi bi-exclamation-circle-fill"></i>
-                <?= esc(session()->getFlashdata('error')) ?>
-            </div>
-        <?php endif ?>
-
-        <form action="<?= site_url('login') ?>" method="post">
-            <?= csrf_field() ?>
-
-            <div class="mb-3">
-                <label class="form-label">Email Address</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-white"><i class="bi bi-envelope text-muted"></i></span>
-                    <input type="email" name="email" class="form-control border-start-0 ps-0"
-                           placeholder="you@rehabplus.com"
-                           value="<?= esc(old('email')) ?>" required autofocus>
-                </div>
-            </div>
-
-            <div class="mb-4">
-                <label class="form-label">Password</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-white"><i class="bi bi-lock text-muted"></i></span>
-                    <input type="password" name="password" id="passwordInput"
-                           class="form-control border-start-0 ps-0 border-end-0"
-                           placeholder="••••••••" required>
-                    <span class="input-group-text bg-white" style="cursor:pointer;" onclick="togglePassword()">
-                        <i class="bi bi-eye text-muted" id="eyeIcon"></i>
-                    </span>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-signin btn-primary w-100 text-white">
-                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
-            </button>
-        </form>
-
-        <div class="divider"></div>
-        <p class="footer-note"><i class="bi bi-shield-check me-1"></i>Secured access — authorised personnel only</p>
     </div>
+
+    <!-- RIGHT -->
+
+    <div class="right-panel">
+
+        <div class="login-box">
+
+            <div class="top-logo">
+
+                <i class="bi bi-heart-pulse-fill"></i>
+
+            </div>
+
+            <h1 class="login-title">
+
+                Welcome back
+
+            </h1>
+
+            <p class="login-subtitle">
+
+                Sign in to your account to continue
+
+            </p>
+
+            <?php if (session()->getFlashdata('success')): ?>
+
+                <div class="alert alert-success">
+
+                    <?= esc(session()->getFlashdata('success')) ?>
+
+                </div>
+
+            <?php endif ?>
+
+            <?php if (session()->getFlashdata('error')): ?>
+
+                <div class="alert alert-danger">
+
+                    <?= esc(session()->getFlashdata('error')) ?>
+
+                </div>
+
+            <?php endif ?>
+
+            <form action="<?= site_url('login') ?>"
+                  method="post">
+
+                <?= csrf_field() ?>
+
+                <!-- EMAIL -->
+
+                <div>
+
+                    <label class="form-label">
+
+                        Email Address
+
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+
+                            <i class="bi bi-envelope"></i>
+
+                        </span>
+
+                        <input type="email"
+                               name="email"
+                               class="form-control"
+                               placeholder="Enter your email"
+                               value="<?= esc(old('email')) ?>"
+                               required>
+
+                    </div>
+
+                </div>
+
+                <!-- PASSWORD -->
+
+                <div>
+
+                    <label class="form-label">
+
+                        Password
+
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+
+                            <i class="bi bi-lock"></i>
+
+                        </span>
+
+                        <input type="password"
+                               name="password"
+                               id="passwordInput"
+                               class="form-control"
+                               placeholder="••••••••"
+                               required>
+
+                        <span class="input-group-text"
+                              onclick="togglePassword()"
+                              style="cursor:pointer;">
+
+                            <i class="bi bi-eye"
+                               id="eyeIcon"></i>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- REMEMBER -->
+
+                <div class="remember-row">
+
+                    <div class="form-check">
+
+                        <input class="form-check-input"
+                               type="checkbox"
+                               id="remember">
+
+                        <label class="form-check-label"
+                               for="remember">
+
+                            Remember me
+
+                        </label>
+
+                    </div>
+
+                    <a href="#">
+
+                        Forgot password?
+
+                    </a>
+
+                </div>
+
+                <!-- BUTTON -->
+
+                <button type="submit"
+                        class="btn-login">
+
+                    <i class="bi bi-box-arrow-in-right me-2"></i>
+
+                    Sign In
+
+                </button>
+
+            </form>
+
+            <div class="footer-line"></div>
+
+            <p class="footer-note">
+
+                <i class="bi bi-shield-check me-1"></i>
+
+                Secured access — authorised personnel only
+
+            </p>
+
+        </div>
+
+    </div>
+
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function togglePassword() {
-        const input = document.getElementById('passwordInput');
-        const icon  = document.getElementById('eyeIcon');
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.classList.replace('bi-eye', 'bi-eye-slash');
-        } else {
-            input.type = 'password';
-            icon.classList.replace('bi-eye-slash', 'bi-eye');
-        }
+
+function togglePassword(){
+
+    const input = document.getElementById('passwordInput');
+
+    const icon = document.getElementById('eyeIcon');
+
+    if(input.type === 'password'){
+
+        input.type = 'text';
+
+        icon.classList.replace('bi-eye','bi-eye-slash');
+
+    }else{
+
+        input.type = 'password';
+
+        icon.classList.replace('bi-eye-slash','bi-eye');
+
     }
+
+}
+
 </script>
+
 </body>
 </html>

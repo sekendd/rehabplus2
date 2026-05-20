@@ -2,33 +2,22 @@
 
 namespace App\Controllers;
 
+use App\Models\AppointmentModel;
+
 class Appointments extends BaseController
 {
+    protected $appointmentModel;
+
+    public function __construct()
+    {
+        $this->appointmentModel = new AppointmentModel();
+    }
+
     public function index()
     {
-        $appointments = [
-            [
-                'patient' => 'Juan dela Cruz',
-                'therapist' => 'Dr. Santos',
-                'date' => 'May 20, 2026',
-                'time' => '9:00 AM',
-                'status' => 'Upcoming'
-            ],
-            [
-                'patient' => 'Maria Santos',
-                'therapist' => 'Dr. Reyes',
-                'date' => 'May 21, 2026',
-                'time' => '1:00 PM',
-                'status' => 'Completed'
-            ],
-            [
-                'patient' => 'Pedro Reyes',
-                'therapist' => 'Dr. Cruz',
-                'date' => 'May 22, 2026',
-                'time' => '3:00 PM',
-                'status' => 'Cancelled'
-            ]
-        ];
+        $appointments = $this->appointmentModel
+            ->orderBy('date', 'ASC')
+            ->findAll();
 
         return view('appointments/index', [
             'appointments' => $appointments
@@ -42,6 +31,27 @@ class Appointments extends BaseController
 
     public function store()
     {
+        $this->appointmentModel->save([
+
+            'patient' => $this->request->getPost('patient'),
+
+            'therapist' => $this->request->getPost('therapist'),
+
+            'patient_condition' => $this->request->getPost('patient_condition'),
+
+            'contact' => $this->request->getPost('contact'),
+
+            'date' => $this->request->getPost('date'),
+
+            'time' => $this->request->getPost('time'),
+
+            'session' => $this->request->getPost('session'),
+
+            'notes' => $this->request->getPost('notes'),
+
+            'status' => 'Upcoming'
+        ]);
+
         return redirect()->to('/appointments')
             ->with('success', 'Appointment scheduled successfully.');
     }
