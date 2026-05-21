@@ -6,6 +6,7 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
+
 // ======================================================
 // AUTH ROUTES
 // ======================================================
@@ -107,30 +108,49 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
     $routes->group('users', ['filter' => 'role:superadmin'], function ($routes) {
 
+        // USERS PAGE
+
         $routes->get(
             '/',
             'UserController::index'
         );
+
+        // CREATE STAFF ACCOUNT PAGE
 
         $routes->get(
             'create',
             'UserController::create'
         );
 
+        // STORE STAFF ACCOUNT
+
         $routes->post(
             '/',
             'UserController::store'
         );
+
+        // CREATE PATIENT ACCOUNT
+
+        $routes->post(
+            'create-patient',
+            'UserController::createPatient'
+        );
+
+        // EDIT USER
 
         $routes->get(
             '(:num)/edit',
             'UserController::edit/$1'
         );
 
+        // UPDATE USER
+
         $routes->post(
             '(:num)',
             'UserController::update/$1'
         );
+
+        // DELETE USER
 
         $routes->post(
             '(:num)/delete',

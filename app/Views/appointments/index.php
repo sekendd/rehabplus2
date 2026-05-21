@@ -72,7 +72,7 @@
                         </div>
 
                         <h2 class="fw-bold mb-0">
-                            34
+                            6
                         </h2>
                     </div>
 
