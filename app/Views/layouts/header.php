@@ -17,11 +17,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
           rel="stylesheet">
 
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet">
 
     <style>
+
+        html.dark-mode{
+            color-scheme:dark;
+        }
 
         :root{
 
@@ -57,6 +64,123 @@
             color:var(--text);
 
             min-height:100vh;
+        }
+
+        html.dark-mode body{
+            --bg:#0f172a;
+            --sidebar:#111827;
+            --card:#1e293b;
+            --text:#e2e8f0;
+            --muted:#94a3b8;
+            --border:#334155;
+            --shadow:0 12px 35px rgba(0,0,0,.22);
+            --bs-body-bg:#0f172a;
+            --bs-body-color:#e2e8f0;
+            --bs-card-bg:#1e293b;
+            --bs-tertiary-bg:#1e293b;
+            --bs-secondary-bg:#1e293b;
+            --bs-table-bg:transparent;
+            --bs-table-color:#cbd5e1;
+            --bs-border-color:#334155;
+        }
+
+        html.dark-mode body .navbar,
+        html.dark-mode body .sidebar{
+            background:var(--sidebar) !important;
+        }
+
+        html.dark-mode body .card,
+        html.dark-mode body .card-header,
+        html.dark-mode body .table-light,
+        html.dark-mode body .bg-white{
+            background-color:var(--card) !important;
+            color:var(--text) !important;
+        }
+
+        html.dark-mode body .sidebar .nav-link{
+            color:#cbd5e1;
+        }
+
+        html.dark-mode body .sidebar .nav-link:hover{
+            background:#1f2937;
+            color:#5eead4;
+        }
+
+        html.dark-mode body .table,
+        html.dark-mode body .table td,
+        html.dark-mode body .table th{
+            color:#cbd5e1;
+            border-color:var(--border);
+        }
+
+        html.dark-mode body .card-body,
+        html.dark-mode body #patientsTable,
+        html.dark-mode body #patientsTable thead,
+        html.dark-mode body #patientsTable tbody,
+        html.dark-mode body #patientsTable tr,
+        html.dark-mode body #patientsTable td,
+        html.dark-mode body #patientsTable th{
+            background-color:transparent !important;
+        }
+
+        html.dark-mode body .table tbody tr:hover{
+            background:#273449;
+        }
+
+        html.dark-mode body .table-responsive,
+        html.dark-mode body .table-hover > tbody > tr:hover > *,
+        html.dark-mode body .table-light > *,
+        html.dark-mode body .table > :not(caption) > * > *{
+            background-color:transparent !important;
+        }
+
+        html.dark-mode body .form-control,
+        html.dark-mode body .form-select,
+        html.dark-mode body .input-group-text,
+        html.dark-mode body textarea{
+            background:#0f172a !important;
+            color:#ffffff !important;
+            border-color:var(--border);
+        }
+
+        html.dark-mode body .form-control::placeholder{
+            color:#ffffff !important;
+            opacity:.75;
+        }
+
+        html.dark-mode body .form-select option{
+            background:#0f172a;
+            color:#ffffff;
+        }
+
+        html.dark-mode body .text-dark{
+            color:var(--text) !important;
+        }
+
+        html.dark-mode body .text-muted,
+        html.dark-mode body .text-secondary{
+            color:var(--muted) !important;
+        }
+
+        html.dark-mode body .btn-outline-secondary{
+            color:#cbd5e1;
+            border-color:#64748b;
+        }
+
+        html.dark-mode body .user-chip{
+            background:#1e293b;
+        }
+
+        .theme-toggle{
+            width:40px;
+            height:40px;
+            border:1px solid var(--border);
+            border-radius:50%;
+            background:var(--card);
+            color:var(--text);
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
         }
 
         /* NAVBAR */
@@ -434,6 +558,12 @@
 
     </style>
 
+    <script>
+        if (localStorage.getItem('rehabplus-theme') === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
+
 </head>
 
 <body>
@@ -458,6 +588,11 @@
             <?= date('F j, Y') ?>
 
         </span>
+
+        <button type="button" class="theme-toggle" id="themeToggle"
+                title="Toggle dark mode" aria-label="Toggle dark mode">
+            <i class="bi bi-moon-fill"></i>
+        </button>
 
         <div class="user-chip">
 

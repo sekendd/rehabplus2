@@ -22,4 +22,9 @@ class UserModel extends Model
     ];
 
     protected $useTimestamps = false;
+
+    public function findByEmail(string $email): ?array
+    {
+        return $this->where('email', $email)->first();
+    }
 }

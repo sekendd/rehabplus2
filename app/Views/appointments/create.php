@@ -28,7 +28,9 @@
 
     <div class="card-body p-4">
 
-        <form action="<?= site_url('appointments/store') ?>" method="post">
+        <form action="<?= !empty($appointment)
+            ? site_url('appointments/' . $appointment['id'])
+            : site_url('appointments/store') ?>" method="post">
 
             <?= csrf_field() ?>
 
@@ -43,7 +45,8 @@
                     <input type="text"
                            name="patient"
                            class="form-control"
-                           required>
+                              value="<?= esc($appointment['patient'] ?? old('patient')) ?>"
+                              required>
 
                 </div>
 
@@ -61,17 +64,11 @@
                             Select therapist
                         </option>
 
-                        <option>
-                            Dr. Santos
-                        </option>
-
-                        <option>
-                            Dr. Reyes
-                        </option>
-
-                        <option>
-                            Dr. Cruz
-                        </option>
+                        <?php foreach ($therapists ?? [] as $therapist): ?>
+                            <option value="<?= esc($therapist['name']) ?>" <?= (!empty($appointment) && $appointment['therapist'] === $therapist['name']) ? 'selected' : '' ?>>
+                                <?= esc($therapist['name']) ?>
+                            </option>
+                        <?php endforeach; ?>
 
                     </select>
 
@@ -87,6 +84,7 @@
                            name="patient_condition"
                            class="form-control"
                            placeholder="ACL Injury"
+                              value="<?= esc($appointment['patient_condition'] ?? old('patient_condition')) ?>"
                            required>
 
                 </div>
@@ -101,6 +99,7 @@
                            name="contact"
                            class="form-control"
                            placeholder="+63 912 345 6789"
+                              value="<?= esc($appointment['contact'] ?? old('contact')) ?>"
                            required>
 
                 </div>
@@ -114,6 +113,7 @@
                     <input type="date"
                            name="date"
                            class="form-control"
+                              value="<?= esc($appointment['date'] ?? old('date')) ?>"
                            required>
 
                 </div>
@@ -127,6 +127,7 @@
                     <input type="time"
                            name="time"
                            class="form-control"
+                              value="<?= esc($appointment['time'] ?? old('time')) ?>"
                            required>
 
                 </div>
@@ -141,20 +142,29 @@
                             class="form-select"
                             required>
 
-                        <option>
+                        <option value="Initial Assessment" <?= (!empty($appointment) && $appointment['session'] == 'Initial Assessment') ? 'selected' : '' ?>>
                             Initial Assessment
                         </option>
 
-                        <option>
+                        <option value="Follow-up Therapy" <?= (!empty($appointment) && $appointment['session'] == 'Follow-up Therapy') ? 'selected' : '' ?>>
                             Follow-up Therapy
                         </option>
 
-                        <option>
+                        <option value="Rehabilitation Session" <?= (!empty($appointment) && $appointment['session'] == 'Rehabilitation Session') ? 'selected' : '' ?>>
                             Rehabilitation Session
                         </option>
 
                     </select>
 
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Status</label>
+                    <select name="status" class="form-select">
+                        <option value="Upcoming" <?= (!empty($appointment) && $appointment['status'] == 'Upcoming') || (empty($appointment) && (old('status') === null || old('status') === 'Upcoming')) ? 'selected' : '' ?>>Upcoming</option>
+                        <option value="Completed" <?= (!empty($appointment) && $appointment['status'] == 'Completed') || old('status') == 'Completed' ? 'selected' : '' ?>>Completed</option>
+                        <option value="Cancelled" <?= (!empty($appointment) && $appointment['status'] == 'Cancelled') || old('status') == 'Cancelled' ? 'selected' : '' ?>>Cancelled</option>
+                    </select>
                 </div>
 
                 <div class="col-12">
@@ -166,7 +176,7 @@
                     <textarea name="notes"
                               rows="4"
                               class="form-control"
-                              placeholder="Add therapy instructions or reminders..."></textarea>
+                              placeholder="Add therapy instructions or reminders..."><?= esc($appointment['notes'] ?? old('notes')) ?></textarea>
 
                 </div>
 

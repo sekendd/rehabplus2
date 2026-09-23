@@ -3,26 +3,46 @@
 namespace App\Controllers;
 
 use App\Models\ExerciseRecordModel;
+use App\Models\PatientModel;
 
 class DashboardController extends BaseController
 {
     public function index()
     {
-        $cache = \Config\Services::cache();
+        $exerciseRecords = new ExerciseRecordModel();
+        $patientStats = $exerciseRecords->getPatientStats();
+        $recentRecords = $exerciseRecords->getRecentRecords(10);
+        $totalPatients = (new PatientModel())->countAllResults();
+        $patientsWithRecords = array_filter($patientStats, static fn (array $patient): bool => (int) $patient['total_sessions'] > 0);
+        $recordedPatientCount = count($patientsWithRecords);
+        $avgCompliance = $recordedPatientCount
+            ? round(array_sum(array_column($patientsWithRecords, 'compliance_rate')) / $recordedPatientCount, 1) : 0;
+        $avgPain = $recordedPatientCount
+            ? round(array_sum(array_column($patientsWithRecords, 'avg_pain')) / $recordedPatientCount, 1) : 0;
+        $hasRecoveryData = $recordedPatientCount > 0;
 
-        $patientStats = $cache->get('patient_stats');
-        if ($patientStats === null) {
-            $patientStats = (new ExerciseRecordModel())->getPatientStats();
-            $cache->save('patient_stats', $patientStats, 300); // cache 5 mins
+        $recoveryLabels = array_column($patientStats, 'name');
+        $recoveryValues = array_map(
+            static fn (array $patient): float => (float) ($patient['recovery_score'] ?? 0),
+            $patientStats
+        );
+
+        $conditionCounts = [];
+        foreach ($patientStats as $patient) {
+            $condition = $patient['condition'];
+            $conditionCounts[$condition] = ($conditionCounts[$condition] ?? 0) + 1;
         }
 
-        $recentRecords = (new ExerciseRecordModel())->getRecentRecords(10);
-        $totalPatients = count($patientStats);
-        $avgCompliance = $totalPatients
-            ? round(array_sum(array_column($patientStats, 'compliance_rate')) / $totalPatients, 1) : 0;
-        $avgPain = $totalPatients
-            ? round(array_sum(array_column($patientStats, 'avg_pain')) / $totalPatients, 1) : 0;
-
-        return view('dashboard/index', compact('patientStats', 'recentRecords', 'totalPatients', 'avgCompliance', 'avgPain'));
+        return view('dashboard/index', compact(
+            'patientStats',
+            'recentRecords',
+            'totalPatients',
+            'avgCompliance',
+            'avgPain',
+            'hasRecoveryData',
+            'recoveryLabels',
+            'recoveryValues',
+            'conditionCounts'
+        ));
     }
 }

@@ -19,7 +19,8 @@ class AppointmentModel extends Model
         'time',
         'session',
         'notes',
-        'status'
+        'status',
+        'completed_at'
     ];
 
     protected $useTimestamps = false;

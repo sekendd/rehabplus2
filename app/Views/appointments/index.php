@@ -42,7 +42,7 @@
                         </div>
 
                         <h2 class="fw-bold mb-0">
-                            12
+                            <?= esc($todayAppointments ?? 0) ?>
                         </h2>
                     </div>
 
@@ -68,11 +68,41 @@
 
                     <div>
                         <div class="text-muted small">
+                            Upcoming
+                        </div>
+
+                        <h2 class="fw-bold mb-0">
+                            <?= esc($upcomingAppointments ?? 0) ?>
+                        </h2>
+                    </div>
+
+                    <div class="bg-warning-subtle rounded-circle p-3">
+                        <i class="bi bi-hourglass-split text-warning fs-4"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <div class="text-muted small">
                             Active Patients
                         </div>
 
                         <h2 class="fw-bold mb-0">
-                            6
+                            <?= esc($activePatients ?? 0) ?>
                         </h2>
                     </div>
 
@@ -102,7 +132,7 @@
                         </div>
 
                         <h2 class="fw-bold mb-0">
-                            8
+                            <?= esc($completedToday ?? 0) ?>
                         </h2>
                     </div>
 
@@ -206,27 +236,23 @@
                     </td>
 
                     <td>
+                        <form method="post" action="<?= site_url('appointments/' . $appointment['id'] . '/status') ?>" class="d-inline-block">
+                            <?= csrf_field() ?>
+                            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()" aria-label="Appointment status">
+                                <option value="Upcoming" <?= ($appointment['status'] ?? 'Upcoming') == 'Upcoming' ? 'selected' : '' ?>>Upcoming</option>
+                                <option value="Completed" <?= ($appointment['status'] ?? 'Upcoming') == 'Completed' ? 'selected' : '' ?>>Completed</option>
+                                <option value="Cancelled" <?= ($appointment['status'] ?? 'Upcoming') == 'Cancelled' ? 'selected' : '' ?>>Cancelled</option>
+                            </select>
+                        </form>
+                    </td>
 
-                        <?php if($appointment['status'] == 'Upcoming'): ?>
-
-                            <span class="badge bg-info">
-                                Upcoming
-                            </span>
-
-                        <?php elseif($appointment['status'] == 'Completed'): ?>
-
-                            <span class="badge bg-success">
-                                Completed
-                            </span>
-
-                        <?php else: ?>
-
-                            <span class="badge bg-danger">
-                                Cancelled
-                            </span>
-
-                        <?php endif; ?>
-
+                    <td class="text-end">
+                        <a href="<?= site_url('appointments/' . $appointment['id']) ?>" class="btn btn-sm btn-outline-secondary me-1">View</a>
+                        <a href="<?= site_url('appointments/' . $appointment['id'] . '/edit') ?>" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+                        <form method="post" action="<?= site_url('appointments/' . $appointment['id'] . '/delete') ?>" class="d-inline" onsubmit="return confirm('Delete this appointment?')">
+                            <?= csrf_field() ?>
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
                     </td>
 
                 </tr>

@@ -15,9 +15,13 @@ $routes->get('/', 'AuthController::login');
 
 $routes->get('login', 'AuthController::login');
 $routes->post('login', 'AuthController::attempt');
+$routes->get('patient-login', 'AuthController::patientLogin');
+$routes->post('patient-login', 'AuthController::attemptPatient');
 
 $routes->get('logout', 'AuthController::logout');
 $routes->post('logout', 'AuthController::doLogout');
+
+$routes->get('patient-portal', 'PatientPortalController::index', ['filter' => ['auth', 'role:patient']]);
 
 
 // ======================================================
@@ -37,9 +41,17 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     // PATIENTS
     // ==================================================
 
-    $routes->resource('patients', [
-        'controller' => 'PatientController'
-    ]);
+    $routes->get('patients', 'PatientController::index');
+    $routes->get('patients/create', 'PatientController::create');
+    $routes->get('patients/new', 'PatientController::create');
+    $routes->get('patients/(:num)', 'PatientController::show/$1');
+    $routes->get('patients/(:num)/edit', 'PatientController::edit/$1');
+    $routes->post('patients', 'PatientController::store');
+    $routes->post('patients/(:num)', 'PatientController::update/$1');
+    $routes->post('patients/(:num)/delete', 'PatientController::delete/$1');
+    $routes->patch('patients/(:num)', 'PatientController::update/$1');
+    $routes->put('patients/(:num)', 'PatientController::update/$1');
+    $routes->delete('patients/(:num)', 'PatientController::delete/$1');
 
 
     // ==================================================
@@ -86,9 +98,39 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
         'Appointments::create'
     );
 
+    $routes->get(
+        'appointments/(:num)',
+        'Appointments::show/$1'
+    );
+
+    $routes->get(
+        'appointments/(:num)/edit',
+        'Appointments::edit/$1'
+    );
+
+    $routes->post(
+        'appointments',
+        'Appointments::store'
+    );
+
     $routes->post(
         'appointments/store',
         'Appointments::store'
+    );
+
+    $routes->post(
+        'appointments/(:num)',
+        'Appointments::update/$1'
+    );
+
+    $routes->post(
+        'appointments/(:num)/delete',
+        'Appointments::delete/$1'
+    );
+
+    $routes->post(
+        'appointments/(:num)/status',
+        'Appointments::changeStatus/$1'
     );
 
 
@@ -141,6 +183,11 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
         $routes->get(
             '(:num)/edit',
             'UserController::edit/$1'
+        );
+
+        $routes->get(
+            '(:num)',
+            'UserController::show/$1'
         );
 
         // UPDATE USER

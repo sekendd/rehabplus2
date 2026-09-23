@@ -20,10 +20,10 @@ class ExerciseRecordModel extends Model
                 p.name,
                 p.condition,
                 COUNT(er.id)                                                        AS total_sessions,
-                ROUND(SUM(er.sets_completed) / NULLIF(SUM(er.sets_prescribed),0) * 100, 1) AS compliance_rate,
-                ROUND(AVG(er.pain_level), 1)                                        AS avg_pain,
-                ROUND((SUM(er.sets_completed) / NULLIF(SUM(er.sets_prescribed),0) * 100)
-                      - (AVG(er.pain_level) * 5), 1)                                AS recovery_score
+                    COALESCE(ROUND(SUM(er.sets_completed) / NULLIF(SUM(er.sets_prescribed),0) * 100, 1), 0) AS compliance_rate,
+                    COALESCE(ROUND(AVG(er.pain_level), 1), 0) AS avg_pain,
+                    COALESCE(ROUND((SUM(er.sets_completed) / NULLIF(SUM(er.sets_prescribed),0) * 100)
+                        - (AVG(er.pain_level) * 5), 1), 0) AS recovery_score
             FROM patients p
             LEFT JOIN exercise_records er ON er.patient_id = p.id
             GROUP BY p.id, p.name, p.condition

@@ -8,9 +8,28 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
+    <script>
+        if (localStorage.getItem('rehabplus-theme') === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
+
     <style>
+        :root{
+            --admin-bg:#eef2f7;
+            --admin-surface:#ffffff;
+            --admin-text:#0f172a;
+            --admin-muted:#64748b;
+            --admin-border:#e5e7eb;
+        }
+
+        html.dark-mode{
+            color-scheme:dark;
+        }
+
         body{
-            background:#eef2f7;
+            background:var(--admin-bg);
+            color:var(--admin-text);
             overflow-x:hidden;
             font-family:'Segoe UI',sans-serif;
         }
@@ -18,8 +37,8 @@
         .sidebar{
             width:280px;
             min-height:100vh;
-            background:white;
-            border-right:1px solid #e5e7eb;
+            background:var(--admin-surface);
+            border-right:1px solid var(--admin-border);
             position:fixed;
             left:0;
             top:0;
@@ -32,8 +51,8 @@
 
         .topbar{
             height:90px;
-            background:white;
-            border-bottom:1px solid #e5e7eb;
+            background:var(--admin-surface);
+            border-bottom:1px solid var(--admin-border);
         }
 
         .menu-link{
@@ -55,6 +74,125 @@
 
         .menu-link:hover{
             background:#f1f5f9;
+        }
+
+        .admin-theme-toggle{
+            width:40px;
+            height:40px;
+            border:1px solid var(--admin-border);
+            border-radius:50%;
+            background:var(--admin-surface);
+            color:var(--admin-text);
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        html.dark-mode body{
+            --admin-bg:#0f172a;
+            --admin-surface:#1e293b;
+            --admin-text:#e2e8f0;
+            --admin-muted:#94a3b8;
+            --admin-border:#334155;
+            --bs-body-bg:#0f172a;
+            --bs-body-color:#e2e8f0;
+            --bs-card-bg:#1e293b;
+            --bs-tertiary-bg:#1e293b;
+            --bs-secondary-bg:#1e293b;
+            --bs-table-bg:transparent;
+            --bs-table-color:#cbd5e1;
+            --bs-border-color:#334155;
+        }
+
+        html.dark-mode .menu-link{
+            color:#cbd5e1;
+        }
+
+        html.dark-mode .menu-link.active{
+            background:#134e4a;
+            color:#99f6e4;
+        }
+
+        html.dark-mode .menu-link:hover{
+            background:#273449;
+        }
+
+        html.dark-mode .text-muted,
+        html.dark-mode .text-secondary{
+            color:var(--admin-muted) !important;
+        }
+
+        html.dark-mode .card,
+        html.dark-mode .card-header,
+        html.dark-mode .table-light,
+        html.dark-mode .bg-white{
+            background-color:var(--admin-surface) !important;
+            color:var(--admin-text) !important;
+        }
+
+        html.dark-mode #staff-roles,
+        html.dark-mode #patient-accounts,
+        html.dark-mode #staff-roles > *,
+        html.dark-mode #patient-accounts > *{
+            background:var(--admin-surface) !important;
+            background-color:var(--admin-surface) !important;
+            color:var(--admin-text);
+        }
+
+        html.dark-mode body #staff-roles .input-group-text,
+        html.dark-mode body #staff-roles .form-control,
+        html.dark-mode body #patient-accounts .form-control,
+        html.dark-mode body #patient-accounts .form-select{
+            background:#0f172a !important;
+            color:var(--admin-text) !important;
+            border-color:var(--admin-border) !important;
+        }
+
+        html.dark-mode body #staff-roles thead,
+        html.dark-mode body #patient-accounts thead,
+        html.dark-mode body #staff-roles thead th,
+        html.dark-mode body #patient-accounts thead th{
+            background:#172235 !important;
+            color:#cbd5e1 !important;
+            border-color:var(--admin-border) !important;
+        }
+
+        html.dark-mode .table,
+        html.dark-mode .table td,
+        html.dark-mode .table th{
+            color:#cbd5e1;
+            border-color:var(--admin-border);
+        }
+
+        html.dark-mode .table-responsive,
+        html.dark-mode .table-hover > tbody > tr:hover > *,
+        html.dark-mode .table-light > *,
+        html.dark-mode .table > :not(caption) > * > *{
+            background-color:transparent !important;
+        }
+
+        html.dark-mode .form-control,
+        html.dark-mode .form-select,
+        html.dark-mode .input-group-text,
+        html.dark-mode textarea{
+            background:#0f172a !important;
+            color:#ffffff !important;
+            border-color:var(--admin-border);
+        }
+
+        html.dark-mode .form-control::placeholder{
+            color:#ffffff !important;
+            opacity:.75;
+        }
+
+        html.dark-mode .form-select option{
+            background:#0f172a;
+            color:#ffffff;
+        }
+
+        html.dark-mode .btn-outline-secondary{
+            color:#cbd5e1;
+            border-color:#64748b;
         }
     </style>
 </head>
@@ -116,6 +254,11 @@
                 <?= date('F d, Y') ?>
             </div>
 
+            <button type="button" class="admin-theme-toggle" id="adminThemeToggle"
+                    title="Toggle dark mode" aria-label="Toggle dark mode">
+                <i class="bi bi-moon-fill"></i>
+            </button>
+
             <div class="d-flex align-items-center gap-3 border rounded-pill px-3 py-2">
 
                 <div class="rounded-circle bg-info text-white d-flex align-items-center justify-content-center"
@@ -156,6 +299,26 @@
     </div>
 
 </div>
+
+<script>
+    const adminThemeToggle = document.getElementById('adminThemeToggle');
+    const adminDark = localStorage.getItem('rehabplus-theme') === 'dark';
+    document.body.classList.toggle('dark-mode', adminDark);
+    if (adminThemeToggle) {
+        adminThemeToggle.innerHTML = adminDark
+            ? '<i class="bi bi-sun-fill"></i>'
+            : '<i class="bi bi-moon-fill"></i>';
+        adminThemeToggle.addEventListener('click', () => {
+            const dark = !document.body.classList.contains('dark-mode');
+            document.body.classList.toggle('dark-mode', dark);
+            document.documentElement.classList.toggle('dark-mode', dark);
+            localStorage.setItem('rehabplus-theme', dark ? 'dark' : 'light');
+            adminThemeToggle.innerHTML = dark
+                ? '<i class="bi bi-sun-fill"></i>'
+                : '<i class="bi bi-moon-fill"></i>';
+        });
+    }
+</script>
 
 </body>
 </html>

@@ -126,6 +126,12 @@
 
                 <canvas id="recoveryChart"></canvas>
 
+                <?php if (empty($hasRecoveryData)): ?>
+                    <div class="alert alert-info mt-3 mb-0">
+                        Add an exercise record from a patient profile to show recovery progress and pain analytics.
+                    </div>
+                <?php endif; ?>
+
             </div>
 
         </div>
@@ -318,11 +324,11 @@ new Chart(document.getElementById('recoveryChart'), {
     type:'line',
 
     data:{
-        labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        labels:<?= json_encode($recoveryLabels ?? []) ?>,
 
         datasets:[{
             label:'Recovery Progress',
-            data:[45,52,60,65,72,80,88],
+            data:<?= json_encode($recoveryValues ?? []) ?>,
 
             borderColor:'#14b8a6',
 
@@ -343,10 +349,10 @@ new Chart(document.getElementById('conditionChart'), {
     type:'doughnut',
 
     data:{
-        labels:['ACL','Rotator','Back Pain','Other'],
+        labels:<?= json_encode(array_keys($conditionCounts ?? [])) ?>,
 
         datasets:[{
-            data:[35,25,20,20],
+            data:<?= json_encode(array_values($conditionCounts ?? [])) ?>,
 
             backgroundColor:[
                 '#14b8a6',

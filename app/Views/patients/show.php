@@ -21,6 +21,9 @@
             <div>
                 <p class="page-title mb-0"><?= esc($patient['name']) ?></p>
                 <span class="badge rounded-pill" style="background:#e0f7fa;color:#0b7a88;font-size:.75rem;"><?= esc($patient['condition']) ?></span>
+                <div class="text-muted small mt-1">
+                    Added <?= !empty($patient['created_at']) ? date('M j, Y g:i A', strtotime($patient['created_at'])) : '—' ?>
+                </div>
             </div>
         </div>
     </div>
@@ -31,6 +34,29 @@
         <a href="<?= site_url('patients/' . $patient['id'] . '/exercises/create') ?>" class="btn btn-sm btn-primary">
             <i class="bi bi-plus-lg me-1"></i>Add Record
         </a>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white fw-semibold">
+                <i class="bi bi-file-medical me-2" style="color:#0e9aaa;"></i>Medical Summary
+            </div>
+            <div class="card-body">
+                <?= !empty($patient['medical_summary']) ? nl2br(esc($patient['medical_summary'])) : '<span class="text-muted">No medical summary recorded.</span>' ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white fw-semibold">
+                <i class="bi bi-clipboard2-pulse me-2" style="color:#0e9aaa;"></i>Exercise / Therapy Plan
+            </div>
+            <div class="card-body">
+                <?= !empty($patient['therapy_plan']) ? nl2br(esc($patient['therapy_plan'])) : '<span class="text-muted">No therapy plan recorded.</span>' ?>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -63,13 +89,14 @@
     </div>
 </div>
 
-<!-- Pain Trend Chart -->
+<!-- Patient Progress Report -->
 <?php if (!empty($trend)): ?>
 <div class="card shadow-sm mb-4">
     <div class="card-header bg-white fw-semibold">
-        <i class="bi bi-graph-up me-2" style="color:#0e9aaa;"></i>Pain Level Trend (Last 14 Days)
+        <i class="bi bi-graph-up me-2" style="color:#0e9aaa;"></i>Patient Progress Report
     </div>
     <div class="card-body">
+        <p class="text-muted small mb-3">Pain level and exercise compliance over the latest recorded days.</p>
         <canvas id="painChart" height="80"></canvas>
     </div>
 </div>
@@ -136,11 +163,28 @@ new Chart(ctx, {
             fill: true,
             pointRadius: 4,
             pointBackgroundColor: '#0e9aaa',
+            yAxisID: 'pain',
+        }, {
+            label: 'Compliance %',
+            data: <?= json_encode(array_column($trend, 'compliance_rate')) ?>,
+            borderColor: '#22c55e',
+            backgroundColor: 'rgba(34,197,94,0.08)',
+            tension: 0.4,
+            fill: false,
+            pointRadius: 4,
+            pointBackgroundColor: '#22c55e',
+            yAxisID: 'compliance',
         }]
     },
     options: {
-        scales: { y: { min: 0, max: 10, ticks: { stepSize: 1 } } },
-        plugins: { legend: { display: false } }
+        scales: {
+            pain: { type: 'linear', position: 'left', min: 0, max: 10, title: { display: true, text: 'Pain' } },
+            compliance: { type: 'linear', position: 'right', min: 0, max: 100, title: { display: true, text: 'Compliance %' }, grid: { drawOnChartArea: false } }
+        },
+        datasets: {
+            line: { spanGaps: true }
+        },
+        plugins: { legend: { display: true } }
     }
 });
 </script>

@@ -18,9 +18,14 @@ class ExerciseController extends BaseController
 
     public function create(int $patientId): string
     {
+        $patient = $this->patients->find($patientId);
+        if ($patient === null) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Patient not found.');
+        }
+
         return view('exercises/form', [
             'record'    => null,
-            'patient'   => $this->patients->findOrFail($patientId),
+            'patient'   => $patient,
             'patientId' => $patientId,
         ]);
     }
@@ -50,9 +55,19 @@ class ExerciseController extends BaseController
 
     public function edit(int $patientId, int $id): string
     {
+        $record = $this->records->find($id);
+        if ($record === null) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Exercise record not found.');
+        }
+
+        $patient = $this->patients->find($patientId);
+        if ($patient === null) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Patient not found.');
+        }
+
         return view('exercises/form', [
-            'record'    => $this->records->findOrFail($id),
-            'patient'   => $this->patients->findOrFail($patientId),
+            'record'    => $record,
+            'patient'   => $patient,
             'patientId' => $patientId,
         ]);
     }

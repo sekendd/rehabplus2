@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\PatientModel;
 
 class UserController extends BaseController
 {
@@ -103,7 +104,18 @@ class UserController extends BaseController
 
         ];
 
-        $model->insert($data);
+        if ($model->insert($data) === false) {
+            return redirect()
+                ->to(site_url('users'))
+                ->with('error', 'Patient account could not be created.');
+        }
+
+        $userId = $model->getInsertID();
+        (new PatientModel())->insert([
+            'user_id' => $userId,
+            'name' => $data['name'],
+            'condition' => 'Not specified',
+        ]);
 
         return redirect()
             ->to(site_url('users'))
@@ -132,6 +144,19 @@ class UserController extends BaseController
         ]);
     }
 
+    public function show($id)
+    {
+        $user = (new UserModel())->find($id);
+
+        if (! $user) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('User not found.');
+        }
+
+        return view('users/show', [
+            'user' => $user
+        ]);
+    }
+
 
     // ======================================================
     // UPDATE USER
@@ -140,6 +165,11 @@ class UserController extends BaseController
     public function update($id)
     {
         $model = new UserModel();
+        $user = $model->find($id);
+
+        if (! $user) {
+            return redirect()->to(site_url('users'));
+        }
 
         $data = [
 
@@ -147,9 +177,13 @@ class UserController extends BaseController
 
             'email' => $this->request->getPost('email'),
 
-            'role' => $this->request->getPost('role'),
-
         ];
+
+        if ($user['role'] !== 'patient') {
+            $data['role'] = $this->request->getPost('role');
+        } else {
+            $data['role'] = 'patient';
+        }
 
         $password = $this->request->getPost('password');
 
@@ -178,7 +212,7 @@ class UserController extends BaseController
         (new UserModel())->delete($id);
 
         return redirect()
-            ->to(site_url('users'))
+            ->to(site_url('users#staff-roles'))
             ->with('success', 'User deleted.');
     }
 }

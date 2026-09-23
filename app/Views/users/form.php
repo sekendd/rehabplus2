@@ -35,11 +35,18 @@ $pageTitle = ($isEdit ? 'Edit User' : 'Add User') . ' – RehabPlus'; ?>
             </div>
             <div class="mb-4">
                 <label class="form-label fw-semibold small">Role</label>
-                <select name="role" class="form-select" required>
-                    <option value="staff"      <?= ($user['role'] ?? '') === 'staff'      ? 'selected' : '' ?>>Staff</option>
-                    <option value="manager"    <?= ($user['role'] ?? '') === 'manager'    ? 'selected' : '' ?>>Manager</option>
-                    <option value="superadmin" <?= ($user['role'] ?? '') === 'superadmin' ? 'selected' : '' ?>>Super Admin</option>
-                </select>
+                <?php if ($isEdit && ($user['role'] ?? '') === 'patient'): ?>
+                    <input type="text" class="form-control" value="Patient" readonly>
+                    <div class="form-text">Patient portal roles cannot be changed.</div>
+                <?php else: ?>
+                    <select name="role" class="form-select" required>
+                        <option value="staff"      <?= ($user['role'] ?? '') === 'staff'      ? 'selected' : '' ?>>Staff</option>
+                        <option value="therapist"  <?= ($user['role'] ?? '') === 'therapist'  ? 'selected' : '' ?>>Therapist</option>
+                        <option value="patient"    <?= ($user['role'] ?? '') === 'patient'    ? 'selected' : '' ?>>Patient</option>
+                        <option value="manager"    <?= ($user['role'] ?? '') === 'manager'    ? 'selected' : '' ?>>Manager</option>
+                        <option value="superadmin" <?= ($user['role'] ?? '') === 'superadmin' ? 'selected' : '' ?>>Super Admin</option>
+                    </select>
+                <?php endif; ?>
             </div>
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary px-4"><?= $isEdit ? 'Update' : 'Save User' ?></button>

@@ -110,7 +110,7 @@
                         </h6>
 
                         <h1 class="fw-bold" style="font-size:48px;">
-                            <?= count($users) ?>
+                            <?= count(array_filter($users, fn($u) => (int) $u['is_active'] === 1)) ?>
                         </h1>
 
                     </div>
@@ -134,7 +134,7 @@
 
 
     <!-- STAFF ROLES -->
-    <div class="card border-0 rounded-5 shadow-sm overflow-hidden mb-4">
+    <div id="staff-roles" class="card border-0 rounded-5 shadow-sm overflow-hidden mb-4">
 
         <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
 
@@ -174,9 +174,15 @@
 
                 <tbody>
 
-                <?php foreach($users as $user): ?>
+                <?php $staffUsers = array_filter($users, fn($user) => $user['role'] !== 'patient'); ?>
 
-                    <?php if($user['role'] != 'patient'): ?>
+                <?php if (empty($staffUsers)): ?>
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">No staff accounts yet.</td>
+                    </tr>
+                <?php endif; ?>
+
+                <?php foreach($staffUsers as $user): ?>
 
                     <tr>
 
@@ -205,6 +211,8 @@
                                             Clinic Manager
                                         <?php elseif($user['role'] == 'staff'): ?>
                                             Rehab Staff Personnel
+                                        <?php elseif($user['role'] == 'therapist'): ?>
+                                            Physical Therapist
                                         <?php endif; ?>
 
                                     </small>
@@ -244,6 +252,13 @@
 
                         <td class="text-end pe-5">
 
+                            <a href="<?= site_url('users/'.$user['id']) ?>"
+                               class="btn btn-outline-secondary rounded-pill px-3 py-2">
+
+                                View
+
+                            </a>
+
                             <a href="<?= site_url('users/'.$user['id'].'/edit') ?>"
                                class="btn btn-outline-primary rounded-pill px-3 py-2">
 
@@ -251,11 +266,25 @@
 
                             </a>
 
+                            <form method="post"
+                                  action="<?= site_url('users/'.$user['id'].'/delete') ?>"
+                                  class="d-inline"
+                                  onsubmit="return confirm('Delete this staff account?')">
+
+                                <?= csrf_field() ?>
+
+                                <button type="submit"
+                                        class="btn btn-outline-danger rounded-pill px-3 py-2">
+
+                                    Delete
+
+                                </button>
+
+                            </form>
+
                         </td>
 
                     </tr>
-
-                    <?php endif; ?>
 
                 <?php endforeach; ?>
 
@@ -270,7 +299,7 @@
 
 
     <!-- PATIENT ACCOUNTS -->
-    <div class="card border-0 rounded-5 shadow-sm overflow-hidden">
+    <div id="patient-accounts" class="card border-0 rounded-5 shadow-sm overflow-hidden">
 
         <div class="p-4 border-bottom">
 
@@ -373,7 +402,15 @@
 
                 <tbody>
 
-                <?php foreach($users as $user): ?>
+                <?php $patientUsers = array_filter($users, fn($user) => $user['role'] === 'patient'); ?>
+
+                <?php if (empty($patientUsers)): ?>
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">No patient portal accounts yet.</td>
+                    </tr>
+                <?php endif; ?>
+
+                <?php foreach($patientUsers as $user): ?>
 
                     <?php if($user['role'] == 'patient'): ?>
 
@@ -423,7 +460,7 @@
 
                         <td class="text-end pe-5">
 
-                            <a href="<?= site_url('users/'.$user['id'].'/edit') ?>"
+                                     <a href="<?= site_url('users/'.$user['id']) ?>"
                                class="btn btn-outline-success rounded-pill px-3 py-2">
 
                                 View
