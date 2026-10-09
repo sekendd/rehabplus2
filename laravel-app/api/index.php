@@ -2,8 +2,6 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Illuminate\Database\Connection;
-use Illuminate\Support\Facades\DB;
 
 define('LARAVEL_START', microtime(true));
 
@@ -19,10 +17,12 @@ require __DIR__.'/../vendor/autoload.php';
 /** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-// Debug: Test database connection
+// Debug: Test database connection after boot
 try {
-    $pdo = DB::connection()->getPdo();
-    error_log("DB Connection OK: " . $pdo->query("SELECT VERSION()")->fetchColumn());
+    $pdo = new PDO($_ENV['DATABASE_URL'] ?? '');
+    $stmt = $pdo->query("SELECT VERSION()");
+    $version = $stmt->fetchColumn();
+    error_log("DB Connection OK: MySQL $version");
 } catch (\Throwable $e) {
     error_log("DB Connection FAILED: " . $e->getMessage());
     error_log("DATABASE_URL: " . ($_ENV['DATABASE_URL'] ?? 'NOT SET'));
